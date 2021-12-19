@@ -17,7 +17,7 @@ public class MoreInfos : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (this.transform.position.z >= -20.6 && this.transform.position.x <= 0.4f && this.transform.position.x >= 0.2f)
+        if (this.transform.position.z >= -20.6 && this.transform.position.x <= 110.4f && this.transform.position.x >= 90.2f)
         {
             Vector3 largeSize = new Vector3(this.transform.position.x,
                                                     this.transform.position.y,
