@@ -20,6 +20,7 @@ public class ntflix : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         //metal = Resources.Load("metal", typeof(Material)) as Material;
        // Button rightButton = right.GetComponent<Button>();
        // rightButton.onClick.AddListener(ShowNext);
@@ -52,7 +53,7 @@ public class ntflix : MonoBehaviour
         b++;
         foreach (GameObject gameObject in coverflow)
         {
-            Vector3 nextPos = new Vector3(gameObject.transform.position.x + 25, 0, -20);
+            Vector3 nextPos = new Vector3(gameObject.transform.position.x + 25, 0, 0);
             gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, nextPos, 2000f * Time.deltaTime);
         }
     }
@@ -83,19 +84,19 @@ public class ntflix : MonoBehaviour
         b++;
         foreach (GameObject gameObject in coverflow)
         {
-            Vector3 nextPos = new Vector3(gameObject.transform.position.x - 25, 0, -20);
+            Vector3 nextPos = new Vector3(gameObject.transform.position.x - 25, 0, 0);
             gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, nextPos, 2000f * Time.deltaTime);
         }
         //yield return null;
     }
     private void SwapPosition(GameObject object1, GameObject object2)
     {
-        Vector3 nextPos = new Vector3(object2.transform.position.x + 25, 0, -20);
+        Vector3 nextPos = new Vector3(object2.transform.position.x + 25, 0, 0);
         object1.transform.position = nextPos;
     }
     private void SwapPositionLeft(GameObject object1, GameObject object2)
     {
-        Vector3 nextPos = new Vector3(object2.transform.position.x - 25, 0, -20);
+        Vector3 nextPos = new Vector3(object2.transform.position.x - 25, 0, 0);
         object1.transform.position = nextPos;
     }
 
@@ -132,6 +133,8 @@ public class ntflix : MonoBehaviour
             g.name = "New";
             coverflow.Add(g);
             //g.GetComponent<stickyText>().text = text;
+            // Add Camera
+            g.GetComponent<MoreInfos>().camera = Camera.main;
             
             var gTitle = g.transform.GetChild(0).GetChild(3).gameObject;
             var gCast = g.transform.GetChild(0).GetChild(1).gameObject;
@@ -151,7 +154,7 @@ public class ntflix : MonoBehaviour
             else if(coverflow.IndexOf(gameObject) != 0)
             {
                 GameObject p = coverflow[coverflow.IndexOf(gameObject) - 1];
-                gameObject.transform.position = new Vector3(p.transform.position.x + 25, 0, -20);
+                gameObject.transform.position = new Vector3(p.transform.position.x + 25, 0, 0);
             }
             
         }

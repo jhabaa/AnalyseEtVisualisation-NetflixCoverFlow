@@ -6,25 +6,48 @@ public class MoreInfos : MonoBehaviour
 {
     public TextAsset csv;
     private string[][] grid;
-    
-
+    RaycastHit hit;
+    public Camera camera;
+    private Vector3 cameraCenter;
+    private Vector3 originalScale;
     // Start is called before the first frame update
     void Start()
     {
         grid = CsvParser2.Parse(csv.text);
+        cameraCenter = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2f, Screen.height / 2f, camera.nearClipPlane));
+        originalScale = new Vector3();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (this.transform.position.z >= -20.6 && this.transform.position.x <= 110.4f && this.transform.position.x >= 90.2f)
+        if (this.transform.position.z >= -20.8 && this.transform.position.x <= 110.4f && this.transform.position.x >= 90.2f)
         {
             Vector3 largeSize = new Vector3(this.transform.position.x,
                                                     this.transform.position.y,
                                                     this.transform.position.z - 0.1f);
             this.transform.position = Vector3.MoveTowards(this.transform.position, largeSize, 1f * Time.deltaTime);
+            
         }
-        if(Input.GetMouseButton(0) == true)
+        /*if(Physics.Raycast(cameraCenter, this.transform.forward, out hit, 1000))
+        {
+            print("New Card");
+        }*/
+
+
+        /*
+        rotating = true;
+        Quaternion startRotation = objectToRotate.transform.rotation;
+        Quaternion endRotation = Quaternion.Euler(angles) * startRotation;
+        for (float t = 0; t < duration; t += Time.deltaTime)
+        {
+            objectToRotate.transform.rotation = Quaternion.Lerp(startRotation, endRotation, t / duration);
+            yield return null;
+        }
+        objectToRotate.transform.rotation = endRotation;
+        rotating = false;
+        */
+        if (Input.GetMouseButton(0) == true)
         {
             
         }
@@ -49,4 +72,30 @@ public class MoreInfos : MonoBehaviour
         Quaternion targetRotation = Quaternion.Euler(direction);
         this.transform.rotation = Quaternion.Lerp(this.transform.rotation, targetRotation, Time.deltaTime * 1);*/
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.collider.tag == "cast")
+        {
+            print("Cast Enter");
+
+             GameObject g = this.gameObject;
+             originalScale = g.transform.localScale;
+             var newScale = new Vector3(g.transform.localScale.x*1.2f, g.transform.localScale.y * 1.2f, g.transform.localScale.z * 1.2f);
+             g.transform.localScale = newScale;
+        }
+    }
+    private void OnCollisionExit(Collision collision)
+    {
+        if(collision.collider.tag == "cast")
+        {
+            GameObject g = this.gameObject;
+            originalScale = g.transform.localScale;
+            var newScale = new Vector3(g.transform.localScale.x / 1.2f, g.transform.localScale.y / 1.2f, g.transform.localScale.z / 1.2f);
+            g.transform.localScale = newScale;
+        }
+        
+    }
+
+
 }
