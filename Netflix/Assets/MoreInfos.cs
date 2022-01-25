@@ -21,6 +21,7 @@ public class MoreInfos : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
         if (this.transform.position.z >= -20.8 && this.transform.position.x <= 110.4f && this.transform.position.x >= 90.2f)
         {
             Vector3 largeSize = new Vector3(this.transform.position.x,
@@ -28,7 +29,7 @@ public class MoreInfos : MonoBehaviour
                                                     this.transform.position.z - 0.1f);
             this.transform.position = Vector3.MoveTowards(this.transform.position, largeSize, 1f * Time.deltaTime);
             
-        }
+        }*/
         /*if(Physics.Raycast(cameraCenter, this.transform.forward, out hit, 1000))
         {
             print("New Card");
@@ -78,23 +79,72 @@ public class MoreInfos : MonoBehaviour
         if(collision.collider.tag == "cast")
         {
             print("Cast Enter");
+            this.transform.Rotate(0f, 0f, 60f);
+            //StartCoroutine(rotatePanel());
 
-             GameObject g = this.gameObject;
+            /*
+             * GameObject g = this.gameObject;
              originalScale = g.transform.localScale;
              var newScale = new Vector3(g.transform.localScale.x*1.2f, g.transform.localScale.y * 1.2f, g.transform.localScale.z * 1.2f);
              g.transform.localScale = newScale;
+             */
+            /*Vector3 largeSize = new Vector3(this.transform.position.x,
+                                                   this.transform.position.y,
+                                                   this.transform.position.z -10.0f);
+            this.transform.position = Vector3.MoveTowards(this.transform.position, largeSize, 2f * Time.deltaTime);*/
+
+
         }
+        
+    }
+    IEnumerator rotatePanel()
+    {
+        Vector3 direction = new Vector3(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, 300f);
+        Quaternion targetRotation = Quaternion.Euler(direction);
+        this.transform.rotation = Quaternion.Lerp(this.transform.rotation, targetRotation, Time.deltaTime * 50f);
+
+        yield return null;
+    }
+    IEnumerator rotatePanelCounterClock()
+    {
+        Vector3 direction = new Vector3(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, -300f);
+        Quaternion targetRotation = Quaternion.Euler(direction);
+        this.transform.rotation = Quaternion.Lerp(this.transform.rotation, targetRotation, Time.deltaTime * 50f);
+
+        yield return null;
     }
     private void OnCollisionExit(Collision collision)
     {
         if(collision.collider.tag == "cast")
         {
-            GameObject g = this.gameObject;
-            originalScale = g.transform.localScale;
-            var newScale = new Vector3(g.transform.localScale.x / 1.2f, g.transform.localScale.y / 1.2f, g.transform.localScale.z / 1.2f);
-            g.transform.localScale = newScale;
+            print("exit");
+            this.transform.Rotate(0f, 0f, -60f);
+            //rotatePanelCounterClock();
+        }
+        /*{
+            print("Cast exit");
+            Vector3 largeSize = new Vector3(this.transform.position.x,
+                                                   this.transform.position.y,
+                                                   this.transform.position.z - 15f);
+            this.transform.position = Vector3.MoveTowards(this.transform.position, largeSize, 200f * Time.deltaTime);
+
+        }*/
+
+    }
+    private void OnCollisionStay(Collision collision)
+    {
+        Vector3 moveVector = new Vector3(0f, 0f, 2f);
+        Physics.IgnoreCollision(collision.gameObject.GetComponent<Collider>(), collision.collider, true);
+        if (this.transform.position.z < 10f & collision.collider.tag == "cast")
+        {
+            print("Moving");
+            this.transform.position -= moveVector;
+            
+
         }
         
+
+
     }
 
 
